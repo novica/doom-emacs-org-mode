@@ -99,7 +99,8 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
 (after! org
-  (setq org-confirm-babel-evaluate nil   ; don't prompt before running src blocks
+  (setq org-archive-location (concat (expand-file-name "archive.org" org-directory) "::* Archived")
+        org-confirm-babel-evaluate nil   ; don't prompt before running src blocks
         org-src-fontify-natively t       ; syntax highlight in src blocks
         org-src-tab-acts-natively t
         org-src-preserve-indentation t
@@ -206,7 +207,11 @@
           ("misc" . ?z)
           ("accomplishment" . ?A)
           ("HR" . ?H)
-          ("general" . ?G)))
+          ("general" . ?G)
+
+          (:startgroup . nil)
+          ("leadership" . ?l) ("delivery" . ?V) ("innovation" . ?I)
+          (:endgroup . nil)))
 
   (setq org-tag-faces
         `(("CRITICAL" . (:weight bold :foreground ,critical-color))
@@ -247,7 +252,7 @@ and leave point where insertion should happen."
       (with-current-buffer (find-file-noselect notes-file)
         (goto-char (point-max))
         (unless (bolp) (insert "\n"))
-        (insert (format "* [[file:%s][%s]]\n" proj-file proj-name))
+        (insert (format "** [[file:%s][%s]]\n" proj-file proj-name))
         (save-buffer)))
     (setq my/capture-project-file nil
           my/capture-project-name nil)))
@@ -299,6 +304,25 @@ and leave point where insertion should happen."
            entry (file+headline ,(expand-file-name "notes.org" org-directory) "Door Codes")
            "** %?"
            :empty-lines 0)
+
+          ("b" "Brag"
+           entry (file+olp ,(expand-file-name "brag.org" org-directory)
+                           ,(format-time-string "%Y"))
+           "** %^{Project} %^g
+:PROPERTIES:
+:STATUS: %^{Status}
+:START_DATE: %^{Start date}t
+:END_DATE: %^{End date}t
+:END:
+
+*** Situation
+%?
+
+*** Action
+
+*** Result
+Result = Outcome + Beneficiaries + Scale + Organizational Impact
+")
 
           ("p" "Project Note"
            plain
