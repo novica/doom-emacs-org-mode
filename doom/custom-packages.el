@@ -21,6 +21,7 @@
 (package! olivetti)
 
 (package! org-bullets)           ; prettier org heading bullets
+(package! org-roam-ui)           ; visual graph UI for org-roam
 
 ;; Optional, only if you want them:
 ;; (package! mode-icons)

@@ -429,6 +429,22 @@ Result = Outcome + Beneficiaries + Scale + Organizational Impact
   (set-face-attribute 'org-done nil :strike-through t)
   (set-face-attribute 'org-headline-done nil :strike-through t))
 
+;; --- Org-roam: networked notes ---
+(after! org-roam
+  (setq org-roam-directory (expand-file-name "roam" org-directory))
+  (unless (file-directory-p org-roam-directory)
+    (make-directory org-roam-directory t))
+  (org-roam-db-autosync-mode))
+
+(use-package! org-roam-ui
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start nil))
+
+
 (use-package! fountain-mode
   :mode ("\\.fountain$" . fountain-mode)
   :config
